@@ -1,0 +1,20 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <% posts.forEach(post => { %>
+        <div class="post">
+            <h2><%= post.name %></h2>
+            <p>Author: <%= post.author %></p>
+        </div>
+    <% }); %>
+
+    <button id="createPostBtn">Create New Post</button>
+    
+    <script src="/static/posts.js"></script>
+</body>
+</html>
