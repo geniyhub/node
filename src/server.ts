@@ -1,6 +1,6 @@
 import express, { Express, Request, Response } from "express";
 import path from "path";
-import postRouter from './routes/postRouter'
+import postRouter from './PostApp/postRouter'
 
 const getCurrentDate = require('./static/date');
 

@@ -1,5 +1,5 @@
 import express from 'express';
-import postController from '../controller/postController';
+import postController from './postController';
 
 const app = express();
 

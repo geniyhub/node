@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import postService from '../service/postService';
+import postService from './postService';
 
 function getPosts(req: Request, res: Response): void {
     const posts = postService.getAllPosts();
