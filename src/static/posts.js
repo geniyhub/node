@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const createPostBtn = document.getElementById('createPostBtn');
 
     createPostBtn.addEventListener('click', async () => {
-        const newPost = {
+        const posts = {
             name: 'New Post',
             author: 'New Author',
         };
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(newPost)
+                body: JSON.stringify(posts)
             });
 
             const data = await response.json();

@@ -4,17 +4,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="/static/style.css">
+    <script src="/static/posts.js"></script>
 </head>
 <body>
-    <% posts.forEach(post => { %>
+    <% posts.forEach((post) => { %>
         <div class="post">
             <h2><%= post.name %></h2>
             <p>Author: <%= post.author %></p>
         </div>
-    <% }); %>
+    <% }) %>
 
     <button id="createPostBtn">Create New Post</button>
-    
-    <script src="/static/posts.js"></script>
 </body>
 </html>

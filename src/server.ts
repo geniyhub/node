@@ -1,8 +1,11 @@
 import express, { Express, Request, Response } from "express";
+import { PrismaClient } from '@prisma/client';
 import path from "path";
 import postRouter from './PostApp/postRouter'
 
 const getCurrentDate = require('./static/date');
+
+const prisma = new PrismaClient();
 
 const SECRET_KEY = 'oioioi'
 
@@ -18,6 +21,19 @@ app.set("views", path.resolve(__dirname, "./templates"))
 app.use("/static/", express.static(path.resolve(__dirname, "./static")))
 
 app.use("/", postRouter);
+
+app.get("/", (req: Request, res: Response) => {
+    res.render('main')
+})
+
+app.get('/comments', async (req, res) => {
+    try {
+      const comments = await prisma.comment.findMany();
+      res.json(comments);
+    } catch (error) {
+      res.status(500).json({ error: 'Error fetching comments' });
+    }
+  });
 
 app.listen(PORT, HOST, () => {
     console.log(`Server is running on port http://${HOST}:${PORT}`);

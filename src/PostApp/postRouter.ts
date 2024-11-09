@@ -1,7 +1,6 @@
 import express from 'express';
 import postController from './postController';
 
-const app = express();
 
 const router = express.Router();
 

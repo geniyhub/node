@@ -3,7 +3,6 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  // Создаём несколько постов
   await prisma.post.createMany({
     data: [
       {
@@ -27,7 +26,6 @@ async function main() {
     ],
   });
 
-  // Создаём отдельный пост с вызовом create
   await prisma.post.create({
     data: {
       name: 'First post',
@@ -37,15 +35,32 @@ async function main() {
     },
   });
 }
+async function createOneComment(){
+  const comment = await prisma.comment.create({
+    data: {
+      postId: 1,
+      name: 'Ageres Pirat',
+      content: 'Информативно, автор наверное талант'
+    }
+  })
+}
+
 
 main()
   .then(() => {
     console.log('Database has been seeded.');
   })
-  .catch((e) => {
-    console.error(e);
+  .catch((err) => {
+    console.error(err);
     process.exit(1);
   })
   .finally(async () => {
     await prisma.$disconnect();
   });
+
+createOneComment().then(() => {
+  prisma.$disconnect()
+}).catch((err) => {
+  console.log(err)
+  prisma.$disconnect()
+})
