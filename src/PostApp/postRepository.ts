@@ -4,13 +4,8 @@ import { Prisma } from "@prisma/client"
 
 async function getPostById(id: number){
     const post = await client.post.findUnique({
-        where: {
-            id: id,
-        },
-        include:{
-            comment: true
-        },
-
+        where: { id: id },
+        include:{ comment: true },
     })
     return post
 }

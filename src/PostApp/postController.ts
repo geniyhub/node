@@ -11,12 +11,12 @@ async function getPosts(req: Request, res: Response): Promise<void> {
     }
 }
 
-function getPostById(req: Request, res: Response): void {
+async function getPostById(req: Request, res: Response): Promise<void> {
     const postId = parseInt(req.params.id, 10);
     const context = postService.getPostById(postId);
 
-    if (context.post) {
-        res.render('post', { post: context.post });
+    if ((await context).post) {
+        res.render('post', { post: (await context).post });
     } else {
         res.status(404).render('post-not-found', { postId });
     }

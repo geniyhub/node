@@ -37,10 +37,10 @@ async function getAllPosts (max?: number){
     return context
 }
 
-function getPostById (id: number){
-    console.log(id)
+async function getPostById(id: number){
+    const post = await postRepository.getPostById(id);
     const context = {
-        post:posts[id-1]
+        post
     }
     return context
 }

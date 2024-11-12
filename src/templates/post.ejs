@@ -10,6 +10,15 @@
     <div class="post">
         <h1><%= post.name %></h1>
         <p class="post-meta">Author: <%= post.author %> </p>
+        <p>
+            <ul>
+                <% post.comment.forEach(comment => { %>
+                <li>
+                  <strong><%= comment.name %></strong>: <%= comment.content %>
+                </li>
+                <% }) %>
+            </ul>
+        </p>
     </div>
     
     <a href="/posts">Back to Posts</a>
