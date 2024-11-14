@@ -4,6 +4,7 @@ import path from "path";
 import cookieParser from "cookie-parser";
 import postRouter from './PostApp/postRouter'
 import userRouter from "./UserApp/userRouter";
+import commentRouter from './CommentApp/commentRouter';
 
 const getCurrentDate = require('./static/date');
 
@@ -29,6 +30,7 @@ app.get("/", (req: Request, res: Response) => {
 })
 
 app.use("/", userRouter)
+app.use('/', commentRouter)
 
 app.get('/comments', async (req, res) => {
     try {

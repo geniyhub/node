@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comment</title>
+</head>
+<body>
+
+  <% if (comment) { %>
+    <h2><%= comment.name %></h2>
+    <p><strong>Body:</strong> <%= comment.content %></p>
+    <p><strong>Запостил:</strong> <%= comment.user ? comment.user.name : 'Anonymous' %></p>
+    <p><strong>Привязан к посту:</strong> <%= comment.postId %></p>
+    <% if (is_authenticated = true) { %>
+        <form id="commentForm">
+          <label for="name">Title:</label>
+          <input type="text" id="name" name="name" required><br>
+    
+          <label for="content">Body:</label>
+          <textarea id="content" name="content" required></textarea><br>
+    
+          <button type="submit">Submit Comment</button>
+        </form>
+      <% } else { %>
+        <p>You must be logged in to create a comment.</p>
+      <% } %>
+  <% } else { %>
+    <p>Комментарий не найден</p>
+  <% } %>
+  
+  
+  <a href="/comment/all">Ко всем комментариям</a>
+</body>
+</html>
