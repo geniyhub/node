@@ -12,11 +12,13 @@
         <p class="post-meta">Author: <%= post.author %> </p>
         <p>
             <ul>
+              <% if (post.comment) {%>
                 <% post.comment.forEach(comment => { %>
                 <li>
                   <strong><%= comment.name %></strong>: <%= comment.content %>
                 </li>
                 <% }) %>
+              <% } %>
             </ul>
         </p>
     </div>

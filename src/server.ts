@@ -5,6 +5,10 @@ import cookieParser from "cookie-parser";
 import postRouter from './PostApp/postRouter'
 import userRouter from "./UserApp/userRouter";
 import commentRouter from './CommentApp/commentRouter';
+import cors from "cors"
+import postRouterApi from "./PostApp/postRouterApi";
+import commentRouterApi from "./CommentApp/commentRouterApi";
+import userApiRouter from "./UserApp/userRouterApi";
 
 const getCurrentDate = require('./static/date');
 
@@ -15,6 +19,10 @@ const HOST = 'localhost'
 const PORT = 7000
 
 const app = express()
+
+app.use(cors({
+  origin : ["http://localhost:3000"]
+}))
 
 app.use(express.json())
 app.use(cookieParser())
@@ -31,6 +39,9 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use("/", userRouter)
 app.use('/', commentRouter)
+app.use("/api/post/", postRouterApi)
+app.use("/api/comment/", commentRouterApi)
+app.use("/api/profile/", userApiRouter)
 
 app.get('/comments', async (req, res) => {
     try {

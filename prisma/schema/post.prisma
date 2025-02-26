@@ -1,10 +1,9 @@
 model Post {
   id          Int       @id @default(autoincrement())
-  name        String
+  title       String
   author      String
   description String
-  date        DateTime
-  userId      Int?
-  user        User?      @relation(fields: [userId], references: [id])
+  image       String
   comment     Comment[]
+  commentId   Int
 }

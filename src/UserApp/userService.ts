@@ -1,59 +1,62 @@
 import userRepository from "./userRepository"
+import { IUser, IUserCreate } from "./types"
+import { IOkWithData ,IError, IOk } from "../types/types"
+import { hash , compare } from "bcryptjs"
+import { SECRET_KEY } from "../config/token";
+import { sign } from "jsonwebtoken";
 
-interface IAuthOk{
-    status: "ok",
-    user: {
-        id: number,
-        username: string,
-        email: string,
-        password: string,
-    }
-}
-
-interface IAuthError{
-    status:"error",
-    message: string,
-}
-
-interface IUserData{
-    username: string,
-    email: string,
-    password: string
-}
-
-
-
-
-async function authLogin(password:string, email: string): Promise<IAuthOk | IAuthError> {
-    const user = await userRepository.findUserByEmail(email)
+async function authLogin(password: string, email: string): Promise<IOkWithData<string> | IError> {
+    const user = await userRepository.findUserByEmail(email);
 
     if (!user) {
-        return {status:"error", message: "пользователь не найден"}
+        return { status: "error", message: "User not users" };
     }
-    if (user.password != password) {
-        return {status:"error", message: "Пароли не совпадают"}
+    if (typeof user === "string") {
+        return { status: "error", message: user };
     }
-    
-    console.log(user)
-    console.log(typeof user)
-    return {status : "ok" , user: user}
+
+    const isMatch = await compare(password, user.password)
+
+    if (!isMatch) {
+        return { status: "error", message: "Passwords are not passwords" };
+    }
+
+    const token = sign(String(user.id), SECRET_KEY, { expiresIn: "1d" })
+
+    return { status: "ok", data: token };
 }
 
-
-async function authRegistration(userData: IUserData): Promise<IAuthOk | IAuthError> {
-    const user = await userRepository.findUserByEmail(userData.email)
-
-    if (user){
-        return { status:"error", message:"Пользователь уже существует" }
+async function authRegistration(userData: IUserCreate): Promise<IOkWithData<string> | IError> {
+    const user = await userRepository.findUserByEmail(userData.email);
+        
+    if (!user) {
+        return { status: "error", message: "user not users" };
     }
 
-    const newUser = await userRepository.createUser(userData)
-
-    if (!newUser){
-        return{ status:"error", message:"Не удалось создать пользователя" }
+    if (typeof user === "string") {
+        return { status: "error", message: user };
     }
-    return{ status:"ok" , user: newUser}
+    
 
+    const hashedPassword = await hash(userData.password, 10)
+    
+    const hashedUserData = {
+        ...userData ,
+        password: hashedPassword
+    }
+
+    const newUser = await userRepository.createUser(hashedUserData);
+    if (typeof newUser === "string") {
+        return { status: "error", message: newUser };
+    }
+
+    if (!newUser) {
+        return { status: "error", message: "User is user" };
+    }
+
+    const token = sign(String(newUser.id), SECRET_KEY, { expiresIn: "1d" })
+
+    return { status: "ok", data: token };
 }
 
 const userService = {

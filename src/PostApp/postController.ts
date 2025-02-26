@@ -1,32 +1,39 @@
 import express, { Request, Response } from 'express';
 import postService from './postService';
 
-async function getPosts(req: Request, res: Response): Promise<void> {
-    try {
-        const context = await postService.getAllPosts();
-        res.render('posts', { posts: context.posts });
-    } catch (error) {
-        console.error('Failed to fetch posts:', error);
-        res.status(500).send('Internal Server Error');
-    }
-}
+async function getPosts(req: Request, res: Response) {
+    const context = await postService.getAllPosts()
 
-async function getPostById(req: Request, res: Response): Promise<void> {
-    const postId = parseInt(req.params.id, 10);
-    const context = postService.getPostById(postId);
+    if (typeof(context) !== 'undefined') {
 
-    if ((await context).post) {
-        res.render('post', { post: (await context).post });
+        if (context.status === "error"){
+            res.render("error", {message: context.message});
+            return
+        }
+        res.render("posts", {message: context.data});
     } else {
-        res.status(404).render('post-not-found', { postId });
+        return
     }
 }
 
-function createPost(req: Request, res: Response): void {
-    console.log(req.body);
-    const posts = req.body;
-    const createdPost = postService.createPost(posts);
-    res.send(createdPost);
+async function getPostById(req: Request, res: Response) {
+    const postId = +req.params.id;
+    const context = await postService.getPostById(postId);
+        if (context.status === "error"){
+            res.render("error", {message: context.message});
+            return
+        }
+
+        res.render("post", {post: context.data});
+}
+
+async function createPost(req: Request, res: Response) {
+    const post = req.body
+    const result = await postService.createPost(post)
+    res.json({
+        status: result.status,
+        message: result.message
+    })
 }
 
 export default { getPosts, getPostById, createPost };

@@ -3,6 +3,5 @@ model User{
     username String
     email String @unique
     password String
-    Posts Post[]
-    Comments Comment[]
+    role     String @default("user")
 }

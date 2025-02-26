@@ -5,8 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
       commentForm.addEventListener("submit", async (event) => {
         event.preventDefault();
   
-        const name = document.getElementById("title").value;
-        const content = document.getElementById("body").value;
+        const name = document.getElementById("name").value;
+        const content = document.getElementById("content").value;
   
         const userId = user.id;
         const postId = 1;
@@ -24,7 +24,6 @@ document.addEventListener("DOMContentLoaded", () => {
   
           if (response.ok) {
             alert("Comment created successfully!");
-            window.location.reload();
           } else {
             alert("Failed to create comment. Please try again.");
           }

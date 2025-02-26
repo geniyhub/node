@@ -1,58 +1,60 @@
 import postRepository from './postRepository';
-
-const posts: {
-            id: number,
-            name: string,
-            author: string,
-            description: string,
-            date: string}[] = [
-    {
-        id: 1,
-        name: 'post1',
-        author: 'Author1',
-        description: 'Description for post1',
-        date: '2023-10-13' 
-    },
-    {
-        id: 2,
-        name: 'post2',
-        author: 'Author2',
-        description: 'Description for post2',
-        date: '2023-10-12'
-    },
-    {
-        id: 3,
-        name: 'post3',
-        author: 'Author3',
-        description: 'Description for post3',
-        date: '2023-10-11'
-    },
-];
+import {IPost, IPostCreate} from "./types"
+import { IOkWithData ,IError, IOk} from "../types/types"
 
 
-async function getAllPosts (max?: number){
-    const context = {
-        posts: await postRepository.getAllPosts()
+
+
+async function getAllPosts (): Promise<IOkWithData<IPost[]> | IError> {
+    const res = await postRepository.getAllPosts()
+    if (typeof(res) === "string"){
+        return {
+            status: "error",
+            message: res
+        }
+
     }
-    return context
-}
-
-async function getPostById(id: number){
-    const post = await postRepository.getPostById(id);
-    const context = {
-        post
+    return {
+        status: "ok",
+        data: res
     }
-    return context
 }
 
-function createPost(post:{id:number,
-    name: string,
-    author: string,
-    description: string,
-    date: string}){
-    posts.push(post)
-    return "hello world"
+async function getPostById(id: number): Promise<IOkWithData<IPost> | IError>{
+    const res = await postRepository.getPostById(id);
+    if (res === null) {
+        return {
+            status: "error",
+            message: "Post not found"
+        }
+    }
+
+
+    if (typeof(res) === "string") {
+        return {
+            status: "error",
+            message: res
+        }
+    }
+    return {
+        status: "ok",
+        data: res
+    }
+}
+
+async function createPost(product: IPostCreate): Promise<IOk | IError> {
+    const res = await postRepository.createPost(product)
+
+    if (typeof(res) === "string"){
+        return {status: "error", message: res}
+    }
+
+    return {
+        status : "ok",
+        message : "Successfuly created product"
+    }
 }
 
 
-export default { getAllPosts, getPostById, createPost };
+
+export default { getAllPosts, getPostById, createPost};

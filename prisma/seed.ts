@@ -6,32 +6,36 @@ async function main() {
   await prisma.post.createMany({
     data: [
       {
-        name: 'post1',
+        title: 'post1',
         author: 'Author1',
+        image: 'https://i.pinimg.com/474x/1e/2e/68/1e2e68ee7d96076a1e7c909c6048da87.jpg',
         description: 'Description for post1',
-        date: new Date('2023-10-13').toISOString(),
+        commentId: 1,
       },
       {
-        name: 'post2',
+        title: 'post2',
         author: 'Author2',
+        image: 'https://i.pinimg.com/736x/61/cc/5e/61cc5e991ed292fffcf723a7f1e20b35.jpg',
         description: 'Description for post2',
-        date: new Date('2023-10-12').toISOString(),
+        commentId: 1,
       },
       {
-        name: 'post3',
+        title: 'post3',
         author: 'Author3',
+        image: 'https://i.pinimg.com/236x/70/e8/09/70e809c6e864cf00dfc946f0665b42d3.jpg',
         description: 'Description for post3',
-        date: new Date('2023-10-11').toISOString(),
+        commentId: 1,
       },
     ],
   });
 
   await prisma.post.create({
     data: {
-      name: 'First post',
+      title: 'First post',
       author: 'Konnan Kalk',
       description: 'Description for the first post',
-      date: new Date().toISOString(),
+      image: 'https://i.pinimg.com/236x/60/25/b4/6025b4f8fb41648f1cd7d8c558ab2357.jpg',
+      commentId: 1,
     },
   });
 }
@@ -39,7 +43,7 @@ async function createOneComment(){
   const comment = await prisma.comment.create({
     data: {
       postId: 1,
-      name: 'Ageres Pirat',
+      title: 'Ageres Pirat',
       content: 'Информативно, автор наверное талант'
     }
   })

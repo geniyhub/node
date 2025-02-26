@@ -1,59 +1,45 @@
 import commentRepository from './commentRepository';
+import {Prisma} from "@prisma/client"
+import { IError, IOk ,IOkWithData} from "../types/types"
+import { IComment, ICommentCreate, ICommentWithPosts} from "./types"
 
-const comments: {
-  id: number;
-  name: string;
-  content: string;
-  userId: number;
-  postId: number;
-}[] = [
-  {
-    id: 1,
-    name: 'Comment 1',
-    content: 'This is the content of comment 1',
-    userId: 1,
-    postId: 1,
-  },
-  {
-    id: 2,
-    name: 'Comment 2',
-    content: 'This is the content of comment 2',
-    userId: 2,
-    postId: 1,
-  },
-  {
-    id: 3,
-    name: 'Comment 3',
-    content: 'This is the content of comment 3',
-    userId: 1,
-    postId: 2,
-  },
-];
 
-async function getAllComments(max?: number) {
-  const context = {
-    comments: await commentRepository.getAllComments(),
-  };
-  return context;
+
+async function getAllComments(): Promise<IOkWithData<IComment[]> | IError> {
+  const comment = await commentRepository.getAllComments()
+    if (!comment){
+        return{status: "error", message: "vsekapec"}
+    }
+    if (typeof comment === "string") {
+        return { status: "error", message: comment }
+    }
+    return {status:"ok", data: comment}
 }
 
-async function getCommentById(id: number) {
+async function getCommentById(id:number): Promise<IOkWithData<IComment> | IError> {
   const comment = await commentRepository.getCommentById(id);
-  const context = {
-    comment,
-  };
-  return context;
+  if (!comment) {
+      return { status: "error", message: "vsekapec" };
+  }
+  if (typeof comment === "string") {
+      return { status: "error", message: comment }
+  }
+  return { status: "ok", data: comment };
 }
 
-function createComment(comment: {
-  id: number;
-  name: string;
-  content: string;
-  userId: number;
-  postId: number;
-}) {
-  comments.push(comment);
-  return "Comment created successfully!";
+async function createComment(data: ICommentCreate): Promise<IOk | IError> {
+        const comment = await commentRepository.createComment(data)
+        if (!comment){
+            return{status: "error", message: "vsekapec"}
+        }
+        if (typeof comment === "string") {
+            return { status: "error", message: comment }
+        }
+        return {status:"ok", message: "where is your power"}
 }
 
-export default { getAllComments, getCommentById, createComment };
+
+
+
+
+export default { getAllComments, getCommentById, createComment};
