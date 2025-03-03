@@ -1,4 +1,5 @@
 import { client, getErrorMessage } from "../client/prismaClient"
+// лучше вынести в types
 import { Prisma } from "@prisma/client"
 
 

@@ -1,7 +1,7 @@
 import postRepository from './postRepository';
 import {IPost, IPostCreate} from "./types"
 import { IOkWithData ,IError, IOk} from "../types/types"
-
+// Лишние пустые строки
 
 
 

@@ -1,12 +1,15 @@
 import commentRepository from './commentRepository';
+// Импорт не используется, нужно убрать
 import {Prisma} from "@prisma/client"
 import { IError, IOk ,IOkWithData} from "../types/types"
+// Импорт не используется, нужно убрать
 import { IComment, ICommentCreate, ICommentWithPosts} from "./types"
 
 
 
 async function getAllComments(): Promise<IOkWithData<IComment[]> | IError> {
   const comment = await commentRepository.getAllComments()
+    // условие не имеет смысла, тк comment не ожидается быть false под него   
     if (!comment){
         return{status: "error", message: "vsekapec"}
     }

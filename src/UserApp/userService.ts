@@ -1,5 +1,7 @@
 import userRepository from "./userRepository"
+// Импорт User не используется, нужно убрать
 import { IUser, IUserCreate } from "./types"
+// Импорт IOk не используется, нужно убрать
 import { IOkWithData ,IError, IOk } from "../types/types"
 import { hash , compare } from "bcryptjs"
 import { SECRET_KEY } from "../config/token";
@@ -20,7 +22,7 @@ async function authLogin(password: string, email: string): Promise<IOkWithData<s
     if (!isMatch) {
         return { status: "error", message: "Passwords are not passwords" };
     }
-
+    // Лучше подписывать в токен объект с id -> {id: user.id}
     const token = sign(String(user.id), SECRET_KEY, { expiresIn: "1d" })
 
     return { status: "ok", data: token };
@@ -53,7 +55,7 @@ async function authRegistration(userData: IUserCreate): Promise<IOkWithData<stri
     if (!newUser) {
         return { status: "error", message: "User is user" };
     }
-
+    // Лучше подписывать в токен объект с id -> {id: user.id}
     const token = sign(String(newUser.id), SECRET_KEY, { expiresIn: "1d" })
 
     return { status: "ok", data: token };

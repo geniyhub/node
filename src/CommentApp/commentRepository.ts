@@ -1,7 +1,7 @@
 import { client, getErrorMessage } from "../client/prismaClient"
 import { Prisma } from "@prisma/client";
 import { ICommentCreate } from "./types";
-
+// Внимание к табуляциям, где то 4, где то 2
 
 async function getAllComments() {
   try {
