@@ -31,12 +31,13 @@ app.set("view engine", "ejs")
 app.set("views", path.resolve(__dirname, "./templates"))
 app.use("/static/", express.static(path.resolve(__dirname, "./static")))
 
-app.use("/", postRouter);
+
 
 app.get("/", (req: Request, res: Response) => {
     res.render('main')
 })
 
+app.use("/", postRouter);
 app.use("/", userRouter)
 app.use('/', commentRouter)
 app.use("/api/post/", postRouterApi)

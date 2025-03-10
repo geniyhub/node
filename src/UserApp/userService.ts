@@ -59,9 +59,21 @@ async function authRegistration(userData: IUserCreate): Promise<IOkWithData<stri
     return { status: "ok", data: token };
 }
 
+async function getUserById (id : number):Promise <IOkWithData<IUser> | IError>{
+    const user = await userRepository.findUserById(id)
+    if (!user){
+        return { status: "error", message: "user not found" };
+    }
+    if (typeof user === "string") {
+        return { status: "error", message: user };
+    }
+    return {status : "ok" , data: user}
+}
+
 const userService = {
     authLogin: authLogin,
-    authRegistration: authRegistration
+    authRegistration: authRegistration,
+    getUserById: getUserById
 }
 
 export default userService
